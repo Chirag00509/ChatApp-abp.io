@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhai+2&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Baloo Bhai 2', cursive;
+}
+
+.container {
+  background: #fff;
+  width: 80vw;
+  height: 93vh;
+}
+
+/* .background{
+  background: url("../../assets/peakpx.jpg");
+} */
+
+input {
+  width: 70%;
+  border: none;
+  padding: 14px;
+  font-size: 15px;
+  outline: none;
+  background: #f1f1f1;
+}
+
+.btn {
+  border: 1px solid green;
+  border-radius: 10px;
+  font-size: 15px;
+  margin-left: 15px;
+  font-weight: 600;
+  padding: 10px;
+  background: none;
+  cursor: pointer;
+  color: green;
+}
+
+.btn:hover {
+  background: green;
+  color: white;
+}
+
+.message {
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 40px;
+  max-width: 200px;
+  position: relative;
+}
+
+.text {
+  overflow: auto;
+  padding-top: 35px;
+  height: 450px;
+  color: #A6ACAF;
+}
+
+.text1{
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.incoming {
+  background: #8F8BE8;
+  color: #fff;
+  margin-right: auto;
+}
+
+.outgoing {
+  background: #73c2fb;
+  color: #fff;
+  margin-left: auto;
+}
+
+.message h4 {
+  position: absolute;
+  top: -20px;
+  left: 0;
+  color: #333;
+  font-size: 12px;
+}
+
+.center {
+  text-align: center;
+  color: #b6b2b2;
+  margin-top: 2px;
+}
+
+.dropbtn {
+  background-color: #3498DB;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #2980B9;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 10px;
+  background-color: #f1f1f1;
+  overflow: hidden;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown a:hover {background-color: #ddd;}
+
+.show {display: block;}
+
+.messageHeader{
+  border-left: 1px solid lightgray;
+  background-color: #f1f1f1;
+  height: 80px;
+  display: flex;
+  align-items: center;
+}
+.rounderdCricle{
+  width: 45px;
+  height: 45px;
+  margin-left: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: lightgray;
+  margin-right: 10px;
+}

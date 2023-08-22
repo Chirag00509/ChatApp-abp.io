@@ -1,0 +1,42 @@
+<div class="container">
+  <!-- <div class="messageHeader">
+    <div class="rounderdCricle">
+      <span style="font-weight: 600;">{{ users.charAt(0) | uppercase}}</span>
+    </div>
+    <p style="font-weight: 600;"> {{ users }} </p>
+  </div> -->
+  <div class="background">
+    <div class="text" #chatContainer scroll-bottom (scroll)="onChatScroll()">
+      <span *ngFor="let message of msgInboxArray" class="text1">
+        <div class="incoming message" *ngIf="message.senderId == currentId" (click)="showDropdown(message.id)">
+          <h4>{{users}}</h4>
+          <p>{{message.content}}</p>
+        </div>
+        <div class="outgoing message" *ngIf="message.senderId == userId" (click)="showDropdown(message.id)">
+          <h4>{{userName}}</h4>
+          <p  *ngIf="editMessageId !== message.id || !messageEdit">{{message.content}}</p>
+          <div class="dropdown" *ngIf="selectedMessageId === message.id">
+            <div id="myDropdown" class="dropdown-content" [ngClass]="{ 'show': isDropdownOpen }">
+              <a (click)="editMessage(message)">Edit</a>
+              <a (click)="deleteMessage(message.id)">Delete</a>
+            </div>
+          </div>
+          <div *ngIf="editMessageId === message.id && messageEdit" style="display: flex; flex-direction: column;">
+            <input type="text" [(ngModel)]="displyMessage" (click)="$event.stopPropagation()" />
+            <div style="display: flex; margin-top: 10px;">
+              <button (click)="saveMessage($event,message.id); $event.stopPropagation();" style="border: none; background: transparent; margin: 0 10px;">Save</button>
+              <button (click)="cancelEdit($event); $event.stopPropagation();" style="border: none; background: transparent;">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </span>
+    </div>
+    <form [formGroup]="sendMessageForm" (ngSubmit)="sendMessages(sendMessageForm.value)">
+      <div style="display: flex; justify-content: center;">
+        <input type="text" id="textarea" style="margin-bottom: 12px;" [(ngModel)]="showMessageInput" placeholder="Write a message..." class="message1"
+          formControlName="message" autofocus />
+        <button class="btn" [disabled]="sendMessageForm.invalid" style="margin-bottom: 12px;">Send</button>
+      </div>
+    </form>
+  </div>
+</div>

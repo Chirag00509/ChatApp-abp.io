@@ -1,0 +1,27 @@
+<body *ngIf="!searchResult">
+  <form [formGroup]="serchForm" (ngSubmit)="search(serchForm.value)">
+      <input type="search" formControlName="search" class="form" placeholder="Search">
+      <button class="searchBtn"> Search </button>
+  </form>
+  <div class="main-container">
+    <div class="user-list">
+      <div class="header">
+        <img height="40" src="../../../assets/chatapp.png" alt="chat image" />
+        <h1>Chat App </h1>
+      </div>
+      <div *ngFor="let user of users" class="user-card" (click)="showMessage(user.id)">
+        <div class="username">
+          <div class="img">
+            <span style="font-weight: 600;">{{ user.name.charAt(0) | uppercase }}</span>
+          </div>
+          <p style="font-weight: 600;"> {{ user.name }} </p>
+        </div>
+        <p style="margin-left: 50px;"> {{ user.email }} </p>
+      </div>
+    </div>
+    <router-outlet name="childPopup"></router-outlet>
+  </div>
+</body>
+<div *ngIf="searchResult">
+  <router-outlet name="childPopup1"></router-outlet>
+</div>

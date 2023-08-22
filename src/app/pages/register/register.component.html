@@ -1,0 +1,41 @@
+<div class="registration-form">
+  <form [formGroup]="registerForm" (ngSubmit)="registration(registerForm.value)">
+    <h1>Registration</h1>
+    <div class="content">
+      <div class="input-field">
+        <input type="text" placeholder="Name" name="name" autocomplete="nope" class="form-control"
+          formControlName="name" [ngClass]="{ error: getControl('name')?.errors && getControl('name')?.touched }">
+        <div class="errorContainer">
+          <span *ngIf="getControl('name')?.errors && getControl('name')?.touched" style="color: red;">Name is
+            required.</span>
+        </div>
+      </div>
+      <div class="input-field">
+        <input type="email" name="email" placeholder="Email" autocomplete="nope" formControlName="email"
+          [ngClass]="{ error: getControl('email')?.errors && getControl('email')?.touched }">
+        <div class="errorContainer">
+          <span *ngIf="getControl('email')?.errors && getControl('email')?.touched" style="color: red;">Email is
+            required.</span>
+        </div>
+      </div>
+      <div class="input-field">
+        <input type="password" name="password" placeholder="Password" autocomplete="new-password"
+          formControlName="password"
+          [ngClass]="{ error: getControl('password')?.errors && getControl('password')?.touched }">
+        <div class="errorContainer">
+          <span *ngIf="getControl('password')?.errors && getControl('password')?.touched" style="color: red;">Password
+            is required.</span>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: center; margin: 20px 0;">
+        <asl-google-signin-button theme="filled_blue" text="signup_with" type="standard" shape='pill' size='medium'></asl-google-signin-button>
+      </div>
+      <span style="text-align: center;">Already you have an account <a routerLink="/login">Login</a></span>
+    </div>
+    <div class="action">
+      <button [disabled]="registerForm.invalid">Sign up</button>
+    </div>
+  </form>
+</div>
+
+

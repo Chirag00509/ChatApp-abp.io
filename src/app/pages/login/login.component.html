@@ -1,0 +1,28 @@
+<div class="login-form">
+  <form [formGroup]="loginForm" (ngSubmit)="login(loginForm.value)">
+    <h1>Login</h1>
+    <div class="content">
+      <div class="input-field">
+        <input name="email" type="email" placeholder="Email" autocomplete="nope" formControlName="email"
+          [ngClass]="{ error: getControl('email')?.errors && getControl('email')?.touched }">
+        <span *ngIf="getControl('email')?.errors && getControl('email')?.touched" style="color: red;">Email is
+          required.</span>
+      </div>
+      <div class="input-field">
+        <input type="password" name="password" placeholder="Password" autocomplete="new-password"
+          formControlName="password"
+          [ngClass]="{ error: getControl('password')?.errors && getControl('password')?.touched }">
+        <span *ngIf="getControl('password')?.errors && getControl('password')?.touched" style="color: red;">Password is
+          required.</span>
+      </div>
+      <div style="display: flex; justify-content: center; margin: 20px 0;">
+        <asl-google-signin-button theme="filled_blue" type="standard" shape='pill' size='medium'></asl-google-signin-button>
+      </div>
+      <a href="#" class="link">Forgot Your Password?</a>
+    </div>
+    <div class="action">
+      <button (click)="navigatePage()">Register</button>
+      <button [disabled]="loginForm.invalid">Sign in</button>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,31 @@
+.message-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.message-table th {
+  background-color: #f2f2f2;
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.message-row td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.message-row:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+@media (max-width: 768px) {
+  .message-table {
+    font-size: 14px;
+  }
+
+  .message-row td {
+    padding: 5px;
+  }
+}

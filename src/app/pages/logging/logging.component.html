@@ -1,0 +1,68 @@
+<div class="container">
+  <form>
+    <label for="timeframe">Select Timeframe:</label>
+    <select [formControl]="selectedTimeframe" (change)="onTimeframeSelection(selectedTimeframe.value)">
+      <option value="Last 5 mins">Last 5 mins</option>
+      <option value="Last 10 mins">Last 10 mins</option>
+      <option value="Last 30 mins">Last 30 mins</option>
+      <option value="Custom">Custom</option>
+    </select>
+  </form>
+</div>
+
+<div *ngIf="selectedTimeframe.value === 'Custom'" class="custom-timeframe">
+  <div class="date-picker">
+    <label for="from">From:</label>
+    <input type="datetime-local" [formControl]="customStartTime" id="from">
+  </div>
+
+  <div class="date-picker">
+    <label for="to">To:</label>
+    <input type="datetime-local" [formControl]="customEndTime" id="to">
+  </div>
+
+  <button (click)="getLogDetails()">Apply</button>
+</div>
+
+<div class="column-toggle">
+  <div class="toggle-group">
+    <input type="checkbox" id="showId" [(ngModel)]="showId" />
+    <label for="showId">Show Id</label>
+  </div>
+  <div class="toggle-group">
+    <input type="checkbox" id="showIP" [(ngModel)]="showIP" />
+    <label for="showIP">Show IP</label>
+  </div>
+  <div class="toggle-group">
+    <input type="checkbox" id="showUsername" [(ngModel)]="showUsername" />
+    <label for="showUsername">Show Username</label>
+  </div>
+  <div class="toggle-group">
+    <input type="checkbox" id="showRequestBody" [(ngModel)]="showRequestBody" />
+    <label for="showRequestBody">Show Request Body</label>
+  </div>
+  <div class="toggle-group">
+    <input type="checkbox" id="showTimestamp" [(ngModel)]="showTimestamp" />
+    <label for="showTimestamp">Show Timestamp</label>
+  </div>
+</div>
+
+
+<table>
+  <tbody>
+    <tr>
+      <th  *ngIf="showId">Id</th>
+      <th *ngIf="showIP">IP</th>
+      <th *ngIf="showUsername">Username</th>
+      <th *ngIf="showRequestBody">Request body</th>
+      <th *ngIf="showTimestamp">Timestemp</th>
+    </tr>
+    <tr *ngFor="let log of loggs">
+      <td *ngIf="showId">{{log.id}}</td>
+      <td *ngIf="showIP">{{log.ip}}</td>
+      <td *ngIf="showUsername">{{log.username}}</td>
+      <td *ngIf="showRequestBody">{{log.requestBody}}</td>
+      <td *ngIf="showTimestamp">{{log.timeStamp}}</td>
+    </tr>
+  </tbody>
+</table>

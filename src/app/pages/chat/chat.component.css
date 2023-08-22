@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Bhai+2&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Baloo Bhai 2', cursive;
+}
+
+body {
+  width: 100vw;
+  background-color: #f8f8f8;
+}
+
+.main-container {
+  display: flex;
+}
+
+.header {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  border-bottom: 1px solid lightgray;
+}
+
+.header h1 {
+  text-transform: uppercase;
+  font-size: 20px;
+  color: #444;
+  margin-left: 10px;
+}
+
+.user-list {
+  overflow: auto;
+  width: 20vw;
+  height: 93vh;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px 20px;
+}
+
+.user-card {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.user-card:last-child {
+  border-bottom: none;
+}
+
+.user-card:hover {
+  background-color: #e6e6e6;
+  cursor: pointer;
+}
+
+.user-card strong {
+  font-weight: bold;
+}
+
+.user-card p {
+  margin: 5px 0;
+}
+
+.user-list-container {
+  margin-left: 20px;
+}
+
+.img {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: lightgray;
+  margin-right: 10px;
+}
+
+.username {
+  display: flex;
+  align-items: center;
+}
+
+.form {
+  width: 100vw;
+  height: 7vh;
+  padding: 15px;
+  font-size: 20px;
+  text-align: center;
+  position: relative;
+}
+
+.searchBtn {
+  border: none;
+  background: transparent;
+  position: absolute;
+  right: 0;
+  top: 10px;
+  margin-right: 10px;
+  font-size: 17px;
+  font-weight: 600;
+}
