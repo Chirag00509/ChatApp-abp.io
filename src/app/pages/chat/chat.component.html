@@ -1,7 +1,7 @@
 <body *ngIf="!searchResult">
   <form [formGroup]="serchForm" (ngSubmit)="search(serchForm.value)">
-      <input type="search" formControlName="search" class="form" placeholder="Search">
-      <button class="searchBtn"> Search </button>
+    <input type="search" formControlName="search" class="form" placeholder="Search">
+    <button class="searchBtn"> Search </button>
   </form>
   <div class="main-container">
     <div class="user-list">
@@ -9,7 +9,12 @@
         <img height="40" src="../../../assets/chatapp.png" alt="chat image" />
         <h1>Chat App </h1>
       </div>
-      <div *ngFor="let user of users" class="user-card" (click)="showMessage(user.id)">
+      <div class="create-group">
+        <button class="create-button" (click)="openGroupPopup()">
+          <h3> + Create Group</h3>
+        </button>
+      </div>
+      <div *ngFor="let user of userList" class="user-card" (click)="showMessage(user.id)">
         <div class="username">
           <div class="img">
             <span style="font-weight: 600;">{{ user.name.charAt(0) | uppercase }}</span>
@@ -18,8 +23,45 @@
         </div>
         <p style="margin-left: 50px;"> {{ user.email }} </p>
       </div>
+
+      <div *ngIf="userIdExists">
+        <div *ngFor="let group of groupList" class="user-card" (click)="showMessage(group.id)">
+          <div class="username">
+            <div class="img">
+              <span style="font-weight: 600;">{{ group.groupName.charAt(0) | uppercase }}</span>
+            </div>
+            <p style="font-weight: 600;"> {{ group.groupName }} </p>
+          </div>
+          <!-- <p style="margin-left: 50px;"> {{ user.email }} </p> -->
+        </div>
+      </div>
+
     </div>
-    <router-outlet name="childPopup"></router-outlet>
+    <router-outlet name="childPopup">
+
+      <div *ngIf="isNestedPopupOpen" class="nested-popup">
+        <h2 style="margin-bottom: 20px; text-align: center;">Create Group</h2>
+
+        <form [formGroup]="createGroupForm" (ngSubmit)="createGroup(createGroupForm.value)">
+          <label for="groupName" style="padding-right: 10px;">Group Name:</label>
+          <input type="text" formControlName="groupName">
+
+          <div class="checkbox-group">
+            <label *ngFor="let user of userList" class="checkbox-label">
+              <input type="checkbox" formControlName="users" [(ngModel)]="user.selected">
+              {{ user.name }}
+            </label>
+          </div>
+
+          <div class="buttons">
+            <button type="submit" class="create-button1">Create</button>
+            <button type="button" (click)="closeNestedPopup()" class="cancel-button">Cancel</button>
+          </div>
+        </form>
+
+      </div>
+
+    </router-outlet>
   </div>
 </body>
 <div *ngIf="searchResult">

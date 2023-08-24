@@ -38,6 +38,7 @@ export class ConversationComponent implements OnInit, AfterViewInit, AfterViewCh
   length: number = 0;
   count: number = 20;
   before: any;
+  groupUserId: boolean = false;
 
   constructor(private userService: UserService, private datePipe: DatePipe, private formBuilder: FormBuilder, private router: Router, private route: ActivatedRoute,
     private chatService: ChatService
@@ -48,8 +49,8 @@ export class ConversationComponent implements OnInit, AfterViewInit, AfterViewCh
     this.before = this.datePipe.transform(currentDate, 'dd/MM/yyyy HH:mm');
     this.route.params.subscribe(params => {
       this.currentId = params['id'];
-      this.showMessage(this.currentId);
       this.getUserList(this.currentId);
+      this.showMessage(this.currentId);
     });
     this.chatService.retrieveMappedObject().subscribe((receivedObj: MessageDto) => {
       this.addToInbox(receivedObj);
@@ -59,6 +60,9 @@ export class ConversationComponent implements OnInit, AfterViewInit, AfterViewCh
       }
     });
     this.initializeForm();
+    this.msgInboxArray.forEach(message => {
+      message.isGroup = this.isGroupMessage(message);
+    });
   }
 
   ngAfterViewInit() {
@@ -82,7 +86,12 @@ export class ConversationComponent implements OnInit, AfterViewInit, AfterViewCh
     return this.sendMessageForm.get(name);
   }
 
-  getUserList(id: string) {
+  isGroupMessage(message: any): boolean {
+    return message.hasOwnProperty('groupId');
+  }
+
+
+  getUserList(id: any) {
 
     const jwtToken = localStorage.getItem('authToken');
 
@@ -95,38 +104,60 @@ export class ConversationComponent implements OnInit, AfterViewInit, AfterViewCh
     this.userId = decodedToken.sub;
     this.userName = decodedToken.preferred_username;
 
-    this.userService.getName(id).subscribe((res) => {
-      this.users = res.userName
-    }, (error) => {
-      if (error instanceof HttpErrorResponse) {
-        const errorMessage = error.error.message;
-        if (errorMessage === undefined) {
-          alert("unauthorized access")
-        } else {
-          alert(errorMessage);
-        }
+    this.userService.getGroupName().subscribe((res) => {
+      this.groupUserId = res.items.some((user: any) => user.id === this.currentId);
+      if (!this.groupUserId) {
+        this.userService.getName(id).subscribe((res) => {
+          this.users = res.userName
+        }, (error) => {
+          if (error instanceof HttpErrorResponse) {
+            const errorMessage = error.error.message;
+            if (errorMessage === undefined) {
+              alert("unauthorized access")
+            } else {
+              alert(errorMessage);
+            }
+          }
+        })
+      } else {
+        this.userService.getGeoupNameById(id).subscribe((res) => {
+          this.users = res.groupName
+        })
       }
     })
   }
 
   showMessage(id: number) {
-    this.userService.getMessage(id, this.count, this.before).subscribe((res) => {
-      this.shouldScrollToBottom = true;
-      this.msgInboxArray = [];
-      for (const message of res.items) {
-        this.addToInbox(message);
+    this.userService.getGroupName().subscribe((res) => {
+      this.groupUserId = res.items.some((user: any) => user.id == id);
+      console.log(this.groupUserId);
+      if (this.groupUserId) {
+        this.userService.getGroupMessage(id).subscribe((res) => {
+          console.log(res.items);
+
+          this.shouldScrollToBottom = true;
+          this.msgInboxArray = [];
+          console.log(this.msgInboxArray);
+          for (const message of res.items) {
+            this.addToInbox(message);
+          }
+        })
+      } else {
+        this.userService.getMessage(id, this.count, this.before).subscribe((res) => {
+          console.log(res);
+
+          this.shouldScrollToBottom = true;
+          this.msgInboxArray = [];
+          console.log(this.msgInboxArray);
+          for (const message of res.items) {
+            this.addToInbox(message);
+          }
+        });
       }
-
       this.getMessages(this.msgInboxArray);
-
       this.allMessages = this.msgInboxArray.filter(
         (message) => message.senderId === this.userId || message.receiverId === this.userId
       );
-    }, (error) => {
-      if (error instanceof HttpErrorResponse) {
-        const errorMessage = error.error.message;
-        alert(errorMessage);
-      }
     });
   }
 
@@ -163,23 +194,44 @@ export class ConversationComponent implements OnInit, AfterViewInit, AfterViewCh
 
   sendMessages(data: any) {
     this.shouldScrollToBottom = true;
-    this.userService.sendMesage(data, this.currentId, this.userId).subscribe(async (res) => {
-      this.msgDto = {
-        content: res.content,
-        receiverId: res.receiverId,
-        id: res.id,
-        senderId: res.senderId
+    let body;
+    let user
+    if (!this.groupUserId) {
+      body = {
+        "receiverId": this.currentId,
+        "content": data.message,
+        "senderId": this.userId,
       }
+    } else {
+      this.userService.getGroupUserList(this.currentId).subscribe((res) => {
+        const users = res.items.filter((user: any) => user.userId != this.userId)
+          .map((user: any) => ({
+            "receiverId": user.userId,
+            "content": data.message,
+            "senderId": this.userId,
+            "groupId": this.currentId,
+          }));
 
-      this.chatService.broadcastMessage(this.msgDto)
-      this.showMessageInput = ""
+        for (user of users) {
+          this.userService.sendMesage(user).subscribe(async (res) => {
+            this.msgDto = {
+              content: res.content,
+              receiverId: res.receiverId,
+              id: res.id,
+              senderId: res.senderId
+            }
+            this.chatService.broadcastMessage(this.msgDto)
+            this.showMessageInput = ""
 
-    }, (error) => {
-      if (error instanceof HttpErrorResponse) {
-        const errorMessage = error.error.message;
-        alert(errorMessage);
-      }
-    })
+          }, (error) => {
+            if (error instanceof HttpErrorResponse) {
+              const errorMessage = error.error.message;
+              alert(errorMessage);
+            }
+          })
+        }
+      });
+    }
   }
 
   deleteMessage(id: any) {

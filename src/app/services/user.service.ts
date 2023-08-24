@@ -62,19 +62,13 @@ export class UserService {
     return this.http.get<any[]>(`https://localhost:44389/api/app/message-custom/messages/${id}`, { headers: headers });
   }
 
-  sendMesage(data: any, receiverId: any, senderId: any): Observable<any> {
+  sendMesage(body: any): Observable<any> {
     const token = localStorage.getItem('authToken');
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     });
-
-    const body = {
-      "receiverId": receiverId,
-      "content": data.message,
-      "senderId": senderId
-    }
 
     return this.http.post<any>("https://localhost:44389/api/app/message", body, { headers: headers })
   }
@@ -141,6 +135,39 @@ export class UserService {
 
   getMessagesById(id: any): Observable<any> {
     return this.http.get<any>(`https://localhost:44389/api/app/message/${id}`)
+  }
+
+  groupName(data: any) : Observable<any> {
+
+    const body = {
+      "groupName" : data.groupName
+    }
+
+    return this.http.post<any>("https://localhost:44389/api/app/group", body);
+  }
+
+  insertGroupId(data: any) : Observable<any> {
+    return this.http.post<any>("https://localhost:44389/api/app/group-user-app-servicecs", data)
+  }
+
+  getGroupName() : Observable<any> {
+    return this.http.get<any>("https://localhost:44389/api/app/group")
+  }
+
+  getGroupUserList(id: string) : Observable<any> {
+    return this.http.get<any>(`https://localhost:44389/api/app/custom-group-user/user/${id}`);
+  }
+
+  getGeoupNameById(id: any) :Observable<any> {
+    return this.http.get<any>(`https://localhost:44389/api/app/group/${id}`);
+  }
+
+  getAllGroupUserList() : Observable<any> {
+    return this.http.get<any>("https://localhost:44389/api/app/group-user-app-servicecs")
+  }
+
+  getGroupMessage(id: any): Observable<any> {
+    return this.http.get<any>(`https://localhost:44389/api/app/message-custom/messages-by-group-id/${id}`);
   }
 
 }

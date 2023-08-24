@@ -31,6 +31,8 @@
         </div>
       </span>
     </div>
+
+
     <form [formGroup]="sendMessageForm" (ngSubmit)="sendMessages(sendMessageForm.value)">
       <div style="display: flex; justify-content: center;">
         <input type="text" id="textarea" style="margin-bottom: 12px;" [(ngModel)]="showMessageInput" placeholder="Write a message..." class="message1"
