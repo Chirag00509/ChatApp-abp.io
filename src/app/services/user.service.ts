@@ -22,20 +22,20 @@ export class UserService {
       "appName": "ChatApp"
     }
 
-    return this.http.post<any>("https://localhost:44389/api/account/register", body, { headers: headers })
+    return this.http.post<any>("https://localhost:44373/api/account/register", body, { headers: headers })
   }
 
-  login(data: any): Observable<any> {
+  generateToken(data: any): Observable<any> {
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/x-www-form-urlencoded'
     });
 
-    return this.http.post<any>("https://localhost:44389/connect/token",
+    return this.http.post<any>("https://localhost:44373/connect/token",
       "username=" + data.email +
       "&password=" + data.password +
       "&grant_type=password" +
-      "&client_id=ChatApp_App&scope=openid offline_access ChatApp",
+      "&client_id=ChatAppss_App&scope=openid offline_access ChatAppss",
       { headers: headers })
   }
 
@@ -48,7 +48,7 @@ export class UserService {
       'Authorization': `Bearer ${token}`
     });
 
-    return this.http.get<any[]>("https://localhost:44389/api/app/user/details", { headers: headers });
+    return this.http.get<any[]>("https://localhost:44373/api/app/user/details", { headers: headers });
   }
 
   getMessage(id: any, count: number, before: any): Observable<any> {
@@ -59,7 +59,7 @@ export class UserService {
       'Authorization': `Bearer ${token}`
     });
 
-    return this.http.get<any[]>(`https://localhost:44389/api/app/message-custom/messages/${id}`, { headers: headers });
+    return this.http.get<any[]>(`https://localhost:44373/api/app/message-custom/messages/${id}`, { headers: headers });
   }
 
   sendMesage(body: any): Observable<any> {
@@ -70,7 +70,7 @@ export class UserService {
       'Authorization': `Bearer ${token}`
     });
 
-    return this.http.post<any>("https://localhost:44389/api/app/message", body, { headers: headers })
+    return this.http.post<any>("https://localhost:44373/api/app/message", body, { headers: headers })
   }
 
   deleteMessage(id: any): Observable<any> {
@@ -81,7 +81,7 @@ export class UserService {
       'Authorization': `Bearer ${token}`
     });
 
-    return this.http.delete<any>(`https://localhost:44389/api/app/message/${id}`, { headers: headers });
+    return this.http.delete<any>(`https://localhost:44373/api/app/message/${id}`, { headers: headers });
 
   }
 
@@ -99,7 +99,7 @@ export class UserService {
       'Authorization': `Bearer ${token}`
     });
 
-    return this.http.put<any>(`https://localhost:44389/api/app/message/${id}`, body, { headers: headers });
+    return this.http.put<any>(`https://localhost:44373/api/app/message/${id}`, body, { headers: headers });
   }
 
   VerifyToken(tokenId: string): Observable<any> {
@@ -118,7 +118,7 @@ export class UserService {
       'Authorization': `Bearer ${token}`
     });
 
-    return this.http.post<any>(`https://localhost:44389/api/app/message-custom/search-result?result=${result}`, { headers: headers })
+    return this.http.post<any>(`https://localhost:44373/api/app/message-custom/search-result?result=${result}`, { headers: headers })
   }
 
   getName(id: string): Observable<any> {
@@ -130,11 +130,11 @@ export class UserService {
       'Authorization': `Bearer ${token}`
     });
 
-    return this.http.get<any>(`https://localhost:44389/api/identity/users/${id}`, { headers: headers })
+    return this.http.get<any>(`https://localhost:44373/api/identity/users/${id}`, { headers: headers })
   }
 
   getMessagesById(id: any): Observable<any> {
-    return this.http.get<any>(`https://localhost:44389/api/app/message/${id}`)
+    return this.http.get<any>(`https://localhost:44373/api/app/message/${id}`)
   }
 
   groupName(data: any) : Observable<any> {
@@ -143,31 +143,31 @@ export class UserService {
       "groupName" : data.groupName
     }
 
-    return this.http.post<any>("https://localhost:44389/api/app/group", body);
+    return this.http.post<any>("https://localhost:44373/api/app/group", body);
   }
 
   insertGroupId(data: any) : Observable<any> {
-    return this.http.post<any>("https://localhost:44389/api/app/group-user-app-servicecs", data)
+    return this.http.post<any>("https://localhost:44373/api/app/group-user-app-servicecs", data)
   }
 
   getGroupName() : Observable<any> {
-    return this.http.get<any>("https://localhost:44389/api/app/group")
+    return this.http.get<any>("https://localhost:44373/api/app/group")
   }
 
   getGroupUserList(id: string) : Observable<any> {
-    return this.http.get<any>(`https://localhost:44389/api/app/custom-group-user/user/${id}`);
+    return this.http.get<any>(`https://localhost:44373/api/app/custom-group-user/user/${id}`);
   }
 
   getGeoupNameById(id: any) :Observable<any> {
-    return this.http.get<any>(`https://localhost:44389/api/app/group/${id}`);
+    return this.http.get<any>(`https://localhost:44373/api/app/group/${id}`);
   }
 
   getAllGroupUserList() : Observable<any> {
-    return this.http.get<any>("https://localhost:44389/api/app/group-user-app-servicecs")
+    return this.http.get<any>("https://localhost:44373/api/app/group-user-app-servicecs")
   }
 
   getGroupMessage(id: any): Observable<any> {
-    return this.http.get<any>(`https://localhost:44389/api/app/message-custom/messages-by-group-id/${id}`);
+    return this.http.get<any>(`https://localhost:44373/api/app/message-custom/messages-by-group-id/${id}`);
   }
 
 }

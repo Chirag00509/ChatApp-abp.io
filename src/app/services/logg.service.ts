@@ -18,8 +18,8 @@ export class LoggService {
     });
 
     if(endTime == null) {
-      return this.http.get<any>(`https://localhost:44389/api/app/logg/logs?startTime=${startTime}`, { headers: headers })
+      return this.http.get<any>(`https://localhost:44373/api/app/logg/logs?startTime=${startTime}`, { headers: headers })
     }
-    return this.http.get<any>(`https://localhost:44389/api/app/logg/logs?startTime=${startTime}&endTime=${endTime}`, { headers: headers })
+    return this.http.get<any>(`https://localhost:44373/api/app/logg/logs?startTime=${startTime}&endTime=${endTime}`, { headers: headers })
   }
 }

@@ -10,7 +10,7 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 export class ChatService {
   token: any = localStorage.getItem("authToken");
 
-  private connection: any = new signalR.HubConnectionBuilder().withUrl("https://localhost:44389/chat", { accessTokenFactory: () => this.token })
+  private connection: any = new signalR.HubConnectionBuilder().withUrl("https://localhost:44373/chat", { accessTokenFactory: () => this.token })
     .configureLogging(signalR.LogLevel.Information)
     .build();
 

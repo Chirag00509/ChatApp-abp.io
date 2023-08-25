@@ -192,46 +192,88 @@ export class ConversationComponent implements OnInit, AfterViewInit, AfterViewCh
     this.messageEdit = false
   }
 
+  // sendMessages(data: any) {
+  //   this.shouldScrollToBottom = true;
+  //   if (!this.groupUserId) {
+  //     const body = {
+  //       "receiverId": this.currentId,
+  //       "content": data.message,
+  //       "senderId": this.userId,
+  //     }
+  //     this.userService.sendMesage(body).subscribe(async (res) => {
+  //       this.msgDto = {
+  //         content: res.content,
+  //         receiverId: res.receiverId,
+  //         id: res.id,
+  //         senderId: res.senderId
+  //       }
+  //       this.chatService.broadcastMessage(this.msgDto);
+  //       this.showMessageInput = "";
+  //     });
+  //   } else {
+  //     this.userService.getGroupUserList(this.currentId).subscribe((res) => {
+  //       const users = res.items.filter((user: any) => user.userId != this.userId)
+  //         .map((user: any) => ({
+  //           "receiverId": user.userId,
+  //           "content": data.message,
+  //           "senderId": this.userId,
+  //           "groupId": this.currentId,
+  //         }));
+
+  //       for (let user of users) {
+  //         this.userService.sendMesage(user).subscribe(async (res) => {
+  //           this.msgDto = {
+  //             content: res.content,
+  //             receiverId: res.receiverId,
+  //             id: res.id,
+  //             senderId: res.senderId
+  //           }
+  //           this.chatService.broadcastMessage(this.msgDto)
+  //           this.showMessageInput = ""
+
+  //         }, (error) => {
+  //           if (error instanceof HttpErrorResponse) {
+  //             const errorMessage = error.error.message;
+  //             alert(errorMessage);
+  //           }
+  //         })
+  //       }
+  //     });
+  //   }
+  // }
+
   sendMessages(data: any) {
     this.shouldScrollToBottom = true;
     let body;
-    let user
     if (!this.groupUserId) {
-      body = {
-        "receiverId": this.currentId,
-        "content": data.message,
-        "senderId": this.userId,
-      }
-    } else {
-      this.userService.getGroupUserList(this.currentId).subscribe((res) => {
-        const users = res.items.filter((user: any) => user.userId != this.userId)
-          .map((user: any) => ({
-            "receiverId": user.userId,
-            "content": data.message,
-            "senderId": this.userId,
-            "groupId": this.currentId,
-          }));
-
-        for (user of users) {
-          this.userService.sendMesage(user).subscribe(async (res) => {
-            this.msgDto = {
-              content: res.content,
-              receiverId: res.receiverId,
-              id: res.id,
-              senderId: res.senderId
-            }
-            this.chatService.broadcastMessage(this.msgDto)
-            this.showMessageInput = ""
-
-          }, (error) => {
-            if (error instanceof HttpErrorResponse) {
-              const errorMessage = error.error.message;
-              alert(errorMessage);
-            }
-          })
+        body = {
+          "receiverId": this.currentId,
+          "content": data.message,
+          "senderId": this.userId,
         }
-      });
-    }
+      } else {
+        body = {
+          "groupId": this.currentId,
+          "content": data.message,
+          "senderId": this.userId,
+        }
+      }
+    this.userService.sendMesage(body).subscribe(async (res) => {
+      this.msgDto = {
+        content: res.content,
+        receiverId: res.receiverId,
+        id: res.messageId,
+        senderId: res.senderId
+      }
+      this.chatService.broadcastMessage(this.msgDto);
+      this.showMessageInput = ""
+
+    }, (error) => {
+      if (error instanceof HttpErrorResponse) {
+        const errorMessage = error.error.message;
+        alert(errorMessage);
+      }
+    })
   }
 
   deleteMessage(id: any) {
