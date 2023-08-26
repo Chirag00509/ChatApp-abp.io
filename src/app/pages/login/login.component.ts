@@ -55,10 +55,14 @@ export class LoginComponent implements OnInit {
 
   login(data: any) {
     this.userService.login(data).subscribe((res) => {
-      if (res) {
-        localStorage.setItem("authToken", res.access_token);
+      if(res.description == "Success") {
         alert("You have successfully login");
-        this.router.navigateByUrl("/chat");
+        this.userService.generateToken(data).subscribe((token: any) => {
+          if (token) {
+            localStorage.setItem("authToken", token.access_token);
+            this.router.navigateByUrl("/chat");
+          }
+        })
       }
     }, (error) => {
       if (error instanceof HttpErrorResponse) {

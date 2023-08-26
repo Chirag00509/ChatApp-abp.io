@@ -25,6 +25,17 @@ export class UserService {
     return this.http.post<any>("https://localhost:44373/api/account/register", body, { headers: headers })
   }
 
+  login(data: any): Observable<any> {
+
+    const body = {
+      "userNameOrEmailAddress": data.email,
+      "password": data.password,
+      "rememberMe": true
+    }
+
+    return this.http.post<any>("https://localhost:44373/api/account/login", body)
+  }
+
   generateToken(data: any): Observable<any> {
 
     const headers = new HttpHeaders({
