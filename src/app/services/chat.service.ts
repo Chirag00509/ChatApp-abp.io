@@ -15,13 +15,13 @@ export class ChatService {
     .build();
 
   private msgInboxArray: MessageDto[] = [];
-  private sharedObj = new Subject<MessageDto>();;
+  private sharedObj = new Subject<MessageDto>();
 
   constructor(private http: HttpClient) {
     this.connection.onclose(async () => {
       //await this.start();
     });
-    this.connection.on("ReceiveOne", (message: any) => { this.mapReceivedMessage(message); });
+    this.connection.on("ReceiveOne", (message: any, senderId: string) => { this.mapReceivedMessage(message, senderId); });
     this.connection.on("ReceiveEdited", (message: any) => { this.mapReceivedEditedMessage(message); });
     this.connection.on("ReceiveDeleted", (message: any) => { this.mapReceivedDeletedMessage(message); });
 
@@ -38,14 +38,14 @@ export class ChatService {
     }
   }
 
-  private mapReceivedMessage(message: any): void {
+  private mapReceivedMessage(message: any, SenderId: string): void {
     const receivedMessageObject: MessageDto = {
       id: message.id,
-      senderId: message.senderId,
+      senderId: SenderId,
       receiverId: message.receiverId,
-      content: message.content
+      content: message.content,
+      groupId: message.groupId
     };
-
     this.sharedObj.next(receivedMessageObject);
   }
 

@@ -84,11 +84,14 @@ export class ChatComponent implements OnInit {
 
   getGroupName() {
     this.userService.getAllGroupUserList().subscribe((res: any) => {
-      this.userIdExists = res.items.some((user: any) => user.userId === this.currentUserId);
 
-      if(this.userIdExists) {
+      const userIdExists = res.items.filter((user: any) => user.userId === this.currentUserId);
+      const groupIds = userIdExists.map((userGroup: any) => userGroup.groupId);
+
+      if(groupIds.length > 0) {
+        this.userIdExists = true;
         this.userService.getGroupName().subscribe((res: any) => {
-          this.groupList = res.items;
+          this.groupList = res.items.filter((group: any) => groupIds.includes(group.id));
         })
       }
     })
@@ -114,6 +117,7 @@ export class ChatComponent implements OnInit {
   createGroup(data: any) {
     this.closeNestedPopup();
     this.userService.groupName(data).subscribe((res) => {
+      this.groupList.push(res);
       const seletectedUser = this.userList.filter(x => x.selected == true).map(x => x.id).join(",").toString();
 
       const selectedUserIdsArray = seletectedUser.split(",");
@@ -123,8 +127,6 @@ export class ChatComponent implements OnInit {
       });
 
       userListWithIds.push({ groupId: res.id, userId: this.currentUserId });
-
-      console.log(userListWithIds);
 
       for (const userObj of userListWithIds) {
         this.userService.insertGroupId(userObj).subscribe((res) => {

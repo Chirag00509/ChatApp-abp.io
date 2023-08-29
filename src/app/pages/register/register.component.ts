@@ -29,15 +29,7 @@ export class RegisterComponent implements OnInit {
       console.log(user);
       this.user = user;
       this.loggedIn = (user != null);
-      this.googleTokenVerifier(this.user.idToken);
     });
-  }
-
-  googleTokenVerifier(token: string) {
-    this.userService.VerifyToken(token).subscribe((res) => {
-      localStorage.setItem("authToken", res.token);
-      this.router.navigateByUrl("/chat");
-    })
   }
 
   initializeForm() {

@@ -27,7 +27,6 @@ export class LoginComponent implements OnInit {
     this.authService.authState.subscribe((user) => {
       this.user = user;
       this.loggedIn = (user != null);
-      this.googleTokenVerifier(this.user.idToken);
     });
   }
 
@@ -40,13 +39,6 @@ export class LoginComponent implements OnInit {
 
   getControl(name: any): AbstractControl | null {
     return this.loginForm.get(name);
-  }
-
-  googleTokenVerifier(token: string) {
-    this.userService.VerifyToken(token).subscribe((res) => {
-      localStorage.setItem("authToken", res.token);
-      this.router.navigateByUrl("/chat");
-    })
   }
 
   navigatePage() {
